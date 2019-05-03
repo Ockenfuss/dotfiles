@@ -266,7 +266,7 @@ alias port='ss -tulanp'
 alias genpasswd="openssl rand -base64 128"
 alias readlink="readlink -f"
 #copy workingdir
-alias cwdir="pwd | xclip -selection clipboard"
+alias cwdir="pwd | tr -d '\n' | xclip -selection clipboard"
 
 # Create sudo aliases for various commands
 if (( UID != 0 )); then
@@ -399,7 +399,11 @@ function cl () {
 
 #carg: copy arguments to clipboard
 function carg () {
-	echo "$@" | xclip -selection clipboard
+	echo "$@" | tr -d '\n' | xclip -selection clipboard
+}
+
+function cpat () {
+	readlink -f $@| tr -d '\n' | xclip -selection clipboard
 }
 
 #evince in background

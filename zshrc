@@ -265,6 +265,10 @@ alias listen='lsof -P -i -n'
 alias port='ss -tulanp'
 alias genpasswd="openssl rand -base64 128"
 alias readlink="readlink -f"
+alias py="python3"
+
+#standard programs for file extensions
+alias -s py=python3
 #copy workingdir
 alias cwdir="pwd | tr -d '\n' | xclip -selection clipboard"
 

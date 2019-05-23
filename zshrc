@@ -19,6 +19,14 @@ zle -N edit-command-line
 bindkey '\ee' edit-command-line
 # }}}
 
+#Dynamic title of terminal
+#echo -ne "\033]2;${PWD/#${HOME}/\~}\007"
+case $TERM in
+    xterm*)
+        precmd () {print -Pn "\e]0;${PWD/#${HOME}/\~}\a"}
+        ;;
+esac
+
 # History configuration {{{
 HISTFILE="${HOME}/.zsh_history"
 HISTSIZE=1000000
@@ -73,7 +81,7 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 # Get rid of .class and .o files for vim
 zstyle ':completion:*:vim:*' ignored-patterns '*.(class|o)'
 # Show menu when tabbing
-zstyle ':completion:*' menu yes select
+zstyle ':completion:*' menu select
 # Pretty completion for kill
 zstyle ':completion:*:*:kill:*' command 'ps --forest -u${USER} -o pid,%cpu,tty,cputime,cmd'
 # Provide more processes in completion of programs like killall:
@@ -164,7 +172,7 @@ else
 	fi
 	host_color="%F{green}"
 	path_color="%F{blue}"
-	PROMPT="${username_color}$USERNAME%f@${host_color}%B%m%b%f ${path_color}%B%~%b%f > "
+	PROMPT="${username_color}$USERNAME%f@${host_color}%B%m%b%f ${path_color}%B%3~%b%f > " #https://jlk.fjfi.cvut.cz/arch/manpages/man/zshmisc.1#EXPANSION_OF_PROMPT_SEQUENCES
 fi
 # }}}
 
@@ -175,9 +183,9 @@ if [[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.
 elif [[ -f "${HOME}/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
 	source "${HOME}/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
-if [[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
-	source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-fi
+# if [[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]]; then
+# 	source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+# fi
 # }}}
 
 

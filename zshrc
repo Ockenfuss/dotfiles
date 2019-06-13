@@ -81,7 +81,7 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 # Get rid of .class and .o files for vim
 zstyle ':completion:*:vim:*' ignored-patterns '*.(class|o)'
 # Show menu when tabbing
-zstyle ':completion:*' menu select
+zstyle ':completion:*' menu yes select
 # Pretty completion for kill
 zstyle ':completion:*:*:kill:*' command 'ps --forest -u${USER} -o pid,%cpu,tty,cputime,cmd'
 # Provide more processes in completion of programs like killall:
@@ -216,6 +216,7 @@ export LESS='-i -n -w -M -R -P%t?f%f \
 [[ -d "${HOME}/c" ]] && export PATH="${HOME}/c:${PATH}"
 [[ -d "${HOME}/bin" ]] && export PATH="${HOME}/bin:${PATH}"
 export PATH="${PATH}:."
+PYTHONSTARTUP=~/.python/startup.py
 
 # Speed up switching to vim mode
 export KEYTIMEOUT=1 # Lower recognition threshold to 10ms for key sequences
@@ -423,11 +424,19 @@ function cpat () {
 
 #evince in background
 function evince () {
-	/usr/bin/evince "$@" >/dev/null &
+	/usr/bin/evince "$@" &>/dev/null &
+}
+
+function firefox () {
+	/usr/bin/firefox "$@" &>/dev/null &
 }
 #okular in background
 function okular () {
 	/usr/bin/okular "$@" &
+}
+#libreoffice
+function libre() {
+	libreoffice "$@" &>/dev/null &
 }
 
 . /etc/profile.d/vte-2.91.sh

@@ -439,4 +439,11 @@ function libre() {
 	libreoffice "$@" &>/dev/null &
 }
 
+#move latest file from download folder
+function md {
+    TEST=$(ls -art ~/Downloads/ | tail -n 1)
+    mv -i ~/Downloads/$TEST ./
+    echo moved $TEST
+}
+
 . /etc/profile.d/vte-2.91.sh

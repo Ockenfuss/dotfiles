@@ -281,6 +281,7 @@ alias py="python3"
 
 #standard programs for file extensions
 alias -s py=python3
+alias -s pdf=evince
 #copy workingdir
 alias cwdir="pwd | tr -d '\n' | xclip -selection clipboard"
 
@@ -364,7 +365,7 @@ which R &>/dev/null && alias R="R --quiet"
 
 # Sort By Size
 sbs() {
-	du -h --max-depth=1 "${@:-"."}" | sort -h
+	du -h --max-depth=0 "${@:-"."}" | sort -h
 }
 
 # Create directory and cd into it
@@ -373,7 +374,7 @@ mcd() { mkdir -p "$1" && cd "$1"; }
 # Comparing the md5sum of a file "$1" with a given one "$2"
 md5check() { md5sum "$1" | grep "$2";}
 
-# Top 10 cammands
+# Top 10 commands
 top10() { history | awk '{a[$4]++ } END{for(i in a){print a[i] " " i}}' | sort -rn | head; }
 
 # Fetching outwards facing IP-adress
@@ -446,4 +447,4 @@ function md {
     echo moved $TEST
 }
 
-. /etc/profile.d/vte-2.91.sh
+# . /etc/profile.d/vte-2.91.sh

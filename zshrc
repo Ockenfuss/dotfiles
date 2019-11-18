@@ -23,7 +23,11 @@ bindkey '\ee' edit-command-line
 #echo -ne "\033]2;${PWD/#${HOME}/\~}\007"
 case $TERM in
     xterm*)
-        precmd () {print -Pn "\e]0;${PWD/#${HOME}/\~}\a"}
+        # precmd () {print -Pn "\e]0;${PWD/#${HOME}/\~}\a"}#Full path
+				#last two elements
+        # precmd () {print -Pn "\e]0;${PWD#"${PWD%/*/*}/"}\a"}
+				#last three elements
+        precmd () {print -Pn "\e]0;${PWD#"${PWD%/*/*/*}/"}\a"}
         ;;
 esac
 
@@ -81,7 +85,10 @@ zstyle ':completion:*:functions' ignored-patterns '_*'
 # Get rid of .class and .o files for vim
 zstyle ':completion:*:vim:*' ignored-patterns '*.(class|o)'
 # Show menu when tabbing
+#automatically select first entry
 zstyle ':completion:*' menu yes select
+#select first entry after tab
+# zstyle ':completion:*' menu select
 # Pretty completion for kill
 zstyle ':completion:*:*:kill:*' command 'ps --forest -u${USER} -o pid,%cpu,tty,cputime,cmd'
 # Provide more processes in completion of programs like killall:
@@ -260,6 +267,7 @@ alias la='ls -Ah'
 # Standard aliases
 alias ..='cd ..'
 alias ...='cd ../..'
+alias ....='cd ../../..'
 alias -- +='pushd .'
 alias -- -='popd'
 alias mv='mv -i'

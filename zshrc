@@ -106,7 +106,8 @@ zstyle ':completion:*:cd:*' ignore-parents parent pwd
 # Prevent lost+found directory from being completed
 zstyle ':completion:*:cd:*' ignored-patterns '(*/)#lost+found'
 # Ignore case when completing
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
 
 # Make some stuff look better
 zstyle ':completion:*:descriptions' format "- %{${fg[yellow]}%}%d%{${reset_color}%} -"

@@ -12,7 +12,7 @@ else
 	Plug 'Shougo/deoplete.nvim'
 endif
 Plug 'deoplete-plugins/deoplete-jedi'
-
+Plug 'ctrlpvim/ctrlp.vim'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-fugitive'  " Fancy git commands
@@ -65,8 +65,7 @@ syntax on           " Enable or disable syntax highlighting
 
 " Code Folding
 " For Python
-au BufNewFile,BufRead *.py 
-  set foldmethod=indent
+au BufNewFile,BufRead *.py set foldmethod=indent
 
 
 " Define an enable switch for hybrid line numbers

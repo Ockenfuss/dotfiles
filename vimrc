@@ -20,11 +20,14 @@ Plug 'mhinz/vim-signify'  " VCS sign indicators
 Plug 'vim-airline/vim-airline'
 Plug 'dense-analysis/ale'
 Plug 'ludovicchabant/vim-gutentags'
-
+Plug 'jiangmiao/auto-pairs' " Autoclose brackets and jump over them
+Plug 'luochen1990/rainbow' " Rainbow colorize brackets
 call plug#end()
 " Plug-in specific configuration
 let g:gruvbox_contrast_dark="hard"  " Can be either 'soft', 'medium' or 'hard'
 silent!colorscheme gruvbox
+" rainbow colors
+let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
 " Fancy status-line
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1

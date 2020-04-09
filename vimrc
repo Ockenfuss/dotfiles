@@ -2,6 +2,8 @@
 " properly set to work with the Vim-related packages.
 runtime! archlinux.vim
 
+let mapleader = " " " The Leader key
+
 call plug#begin('~/.vim/plugged')
 Plug 'editorconfig/editorconfig-vim'
 Plug 'jamessan/vim-gnupg'
@@ -22,8 +24,12 @@ Plug 'dense-analysis/ale'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'jiangmiao/auto-pairs' " Autoclose brackets and jump over them
 Plug 'luochen1990/rainbow' " Rainbow colorize brackets
+Plug 'preservim/nerdcommenter' " Shortcuts to comment lines and blocks
+Plug 'SirVer/ultisnips' " Snippet engine to insert code snippets
+Plug 'honza/vim-snippets' " Code templates for various programming languages
 call plug#end()
 " Plug-in specific configuration
+filetype plugin on
 let g:gruvbox_contrast_dark="hard"  " Can be either 'soft', 'medium' or 'hard'
 silent!colorscheme gruvbox
 " rainbow colors
@@ -43,7 +49,7 @@ let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#jedi#show_docstring = 1
 " Do not pollute projects with .ctags files
 let g:gutentags_cache_dir = "~/.cache/ctags/"
-
+let g:UltiSnipsExpandTrigger="<tab>"
 set updatetime=100  " Plug-in update-time
 
 set background=dark  " Specify either "dark" or "light"

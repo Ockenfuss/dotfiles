@@ -30,6 +30,9 @@ Plug 'honza/vim-snippets' " Code templates for various programming languages
 call plug#end()
 " Plug-in specific configuration
 filetype plugin on
+if !executable('ctags')
+    let g:gutentags_dont_load = 1
+endif
 let g:gruvbox_contrast_dark="hard"  " Can be either 'soft', 'medium' or 'hard'
 silent!colorscheme gruvbox
 " rainbow colors

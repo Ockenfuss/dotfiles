@@ -290,9 +290,10 @@ alias py="python3"
 
 #standard programs for file extensions
 alias -s py=python3
-alias -s pdf=evince
+alias -s pdf=ev
 #copy workingdir
-alias cwdir="pwd | tr -d '\n' | xclip -selection clipboard"
+alias clip='xclip -selection clipboard'
+alias cwdir="pwd | tr -d '\n' | clip"
 
 # Create sudo aliases for various commands
 if (( UID != 0 )); then
@@ -425,15 +426,15 @@ function cl () {
 
 #carg: copy arguments to clipboard
 function carg () {
-	echo "$@" | tr -d '\n' | xclip -selection clipboard
+	echo "$@" | tr -d '\n' | clip
 }
 
 function cpat () {
-	readlink -f $@| tr -d '\n' | xclip -selection clipboard
+	readlink -f $@| tr -d '\n' | clip
 }
 
 #evince in background
-function evince () {
+function ev () {
 	/usr/bin/evince "$@" &>/dev/null &
 }
 

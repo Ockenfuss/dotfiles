@@ -200,8 +200,8 @@ fi
 # --- # Shell agnostic configuration
 
 # Export the default ditor
-if which code &>/dev/null; then
-	export EDITOR="code"
+if which nvim &>/dev/null; then
+	export EDITOR="nvim"
 elif which vim &>/dev/null; then
 	export EDITOR="vim"
 elif which vi &>/dev/null; then

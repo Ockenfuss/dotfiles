@@ -180,6 +180,8 @@ if [[ -d /usr/share/oh-my-zsh/ || -d "${HOME}/.oh-my-zsh/" ]]; then
 
 	# Initiate oh-my-zsh
 	source "${ZSH}/oh-my-zsh.sh"
+	#Use move-download function defined below
+	unalias md
 fi
 # }}}
 

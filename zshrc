@@ -468,4 +468,9 @@ function md {
     echo moved $TEST
 }
 
+#Add Date Prefix
+function adp {
+	prefix=`date +%Y_%m_%d_`
+	mv -i $1 $prefix$1
+}
 # . /etc/profile.d/vte-2.91.sh

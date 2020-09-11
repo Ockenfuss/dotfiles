@@ -196,9 +196,11 @@ path_color="%F{blue}"
 PROMPT="${username_color}$USERNAME%f@${host_color}%B%m%b%f ${path_color}%B%3~%b%f > " #https://jlk.fjfi.cvut.cz/arch/manpages/man/zshmisc.1#EXPANSION_OF_PROMPT_SEQUENCES
 
 # Loading external ZSH configuration {{{
-# ZSH syntax highlighting
+# ZSH syntax highlighting: see https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/INSTALL.md
 if [[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
 	source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+elif [[ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]]; then
+	source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 elif [[ -f "${HOME}/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]]; then
 	source "${HOME}/.zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 fi
@@ -282,14 +284,11 @@ alias ...='cd ../..'
 alias ....='cd ../../..'
 alias -- +='pushd .'
 alias -- -='popd'
-alias mv='mv -i'
-alias cp='cp -i'
-alias rm='rm'
-alias li='less -i'
 alias p='ps -u `/usr/bin/whoami` -o uid,pid,ppid,class,c,nice,stime,tty,cputime,comm'
 alias r='echo $?'
 alias c='clear'
 alias v='vim'
+alias li='less -i'
 alias cmount='mount | column -t'
 alias meminfo='free -m -l -t'
 alias intercept='sudo strace -ff -e trace=write -e write=1,2 -p'
@@ -298,6 +297,15 @@ alias port='ss -tulanp'
 alias genpasswd="openssl rand -base64 128"
 alias readlink="readlink -f"
 alias py="python3"
+
+# Safety aliases
+alias rm='rm -I --preserve-root'
+alias mv='mv -i'
+alias cp='cp -i'
+alias ln='ln -i'
+alias chmod='chmod --preserve-root'
+alias chown='chown --preserve-root'
+alias chgrp='chgrp -preserve-root'
 
 #standard programs for file extensions
 alias -s py=python3

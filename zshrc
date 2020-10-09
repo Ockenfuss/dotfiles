@@ -239,6 +239,9 @@ export LESS='-i -n -w -M -R -P%t?f%f \
 export PATH="${PATH}:."
 PYTHONSTARTUP=~/.python/startup.py
 
+# Local configuration file
+[ -f "${HOME}/.zsh_local" ] && . "${HOME}/.zsh_local"
+
 # Speed up switching to vim mode
 export KEYTIMEOUT=1 # Lower recognition threshold to 10ms for key sequences
 

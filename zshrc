@@ -1,17 +1,14 @@
-# Keybindings {{{
-# Use vim keyboard bindings
-bindkey -v
 # Use some of emacs' shortcuts to move around
-bindkey '\e[1~' beginning-of-line
-bindkey '\e[4~' end-of-line
-bindkey '\e[3~' delete-char
-bindkey '\e[2~' overwrite-mode
-bindkey "^[[7~" beginning-of-line	# Pos1
-bindkey "^[[8~" end-of-line			# End
-bindkey "^[[A" history-beginning-search-backward
-bindkey "^[OA" history-beginning-search-backward
-bindkey "^[[B" history-beginning-search-forward
-bindkey "^[OB" history-beginning-search-forward
+# bindkey '\e[1~' beginning-of-line
+# bindkey '\e[4~' end-of-line
+# bindkey '\e[3~' delete-char
+# bindkey '\e[2~' overwrite-mode
+# bindkey "^[[7~" beginning-of-line	# Pos1
+# bindkey "^[[8~" end-of-line			# End
+# bindkey "^[[A" history-beginning-search-backward
+# bindkey "^[OA" history-beginning-search-backward
+# bindkey "^[[B" history-beginning-search-forward
+# bindkey "^[OB" history-beginning-search-forward
 
 # Add edit command line feature ("alt-e")
 autoload edit-command-line
@@ -162,14 +159,16 @@ if [[ -d /usr/share/oh-my-zsh/ || -d "${HOME}/.oh-my-zsh/" ]]; then
 	# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
 	# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 	#git: git plugin which integrates into your tab completion
-	plugins=(vi-mode git dirhistory)
+	plugins=(git dirhistory vi-mode)
+	VI_MODE_SET_CURSOR=true
+	# VI_MODE_RESET_PROMPT_ON_MODE_CHANGE=true #Show a notification of the current vi mode
 
 	#z: fuzzy directory finder based on frecency (frequency+recently)
 	#faster z plugin from https://github.com/agkozak/zsh-z
 	if [[ -d $ZSH_CUSTOM/plugins/zsh-z ]]; then
-		plugins=(zsh-z)
+		plugins+=(zsh-z)
 	else
-		plugins=(z)
+		plugins+=(z)
 	fi
 
 	# Oh-my-zsh caching
@@ -268,6 +267,9 @@ command_not_found_handler() {
 	fi
 }
 
+# Use vim keyboard bindings
+bindkey -v
+
 # Enable autocolor for various commands through alias
 alias ls='ls --color=auto --group-directories-first'
 alias dir='dir --color=auto'
@@ -302,7 +304,8 @@ alias readlink="readlink -f"
 alias py="python3"
 
 # Safety aliases
-alias rm='rm -I --preserve-root'
+alias rm='echo "Please use the \"trash\" alias instead."'
+alias trash='/bin/rm -I --preserve-root'
 alias mv='mv -i'
 alias cp='cp -i'
 alias ln='ln -i'
@@ -352,22 +355,6 @@ if which systemctl &>/dev/null; then
 	alias list-unit-files='systemctl list-unit-files'
 fi
 
-# Pacman support
-if which pacman &>/dev/null; then
-	if (( UID != 0 )); then
-		alias pacman='sudo pacman'
-		alias mkinitcpio='sudo mkinitcpio'
-		# A custom cache location can be specified with '-c'; consider this a TODO for you to adjust
-		alias paccache='sudo paccache -v -c /var/cache/pacman/pkg -c /var/cache/aur'
-		# Finding libraries which where renewed in an update but where the old version is still used
-		alias outlib="sudo lsof +c 0 | { grep 'DEL.*lib' || true } | awk '{ print \$NF }' | sort -u"
-	else
-		# A custom cache location can be specified with '-c'; consider this a TODO for you to adjust
-		alias paccache='paccache -v -c /var/cache/pacman/pkg -c /var/cache/aur'
-		# Finding libraries which where renewed in an update but where the old version is still used
-		alias outlib="lsof +c 0 | { grep 'DEL.*lib' || true } | awk '{ print \$NF }' | sort -u"
-	fi
-fi
 
 # Support netctl commands if available
 if which netctl &>/dev/null; then
@@ -382,13 +369,6 @@ fi
 alias fibs='find . -not -path "/proc/*" -not -path "/run/*" -type l -! -exec test -e {} \; -print'
 alias fl='find . -type l -exec ls --color=auto -lh {} \;'
 
-# Metasploit Framework
-# Quiet disables ASCII banner and -x ... auto-connects to msf postgresql database owned by ${USER}
-if which msfconsole systemctl &>/dev/null; then
-	alias msfconsole='start postgresql && msfconsole --quiet -x "db_connect ${USER}@msf"'
-elif which msfconsole &>/dev/null; then
-	alias msfconsole='msfconsole --quiet -x "db_connect ${USER}@msf"'
-fi
 
 # Enable fuck support if present
 which thefuck &>/dev/null && eval "$(thefuck --alias)"

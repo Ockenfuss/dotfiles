@@ -466,3 +466,5 @@ function adp {
 	mv -i $1 $prefix$1
 }
 # . /etc/profile.d/vte-2.91.sh
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

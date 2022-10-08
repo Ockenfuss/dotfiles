@@ -141,13 +141,11 @@ if [[ -d /usr/share/oh-my-zsh/ || -d "${HOME}/.oh-my-zsh/" ]]; then
 	fi
 
 	# ZSH theme. I always use my dead-simple custom prompt (see below)
-	# Use a different theme for ssh sessions, containers and local
-	# if [[ -n "${SSH_CLIENT}" || -n "${SSH_TTY}" ]]; then
-	# 	ZSH_THEME="agnoster" # Fancy and colorful
-	# elif systemd-detect-virt &>/dev/null; then
+	# Use a different theme for containers and local
+	# if systemd-detect-virt &>/dev/null; then
 	# 	ZSH_THEME="agnoster" # Fancy and colorful
 	# else
-		ZSH_THEME="robbyrussell" # Plain and simple
+	#	ZSH_THEME="robbyrussell" # Plain and simple
 	# fi
 
 	# Disable bi-weekly auto-update checks of oh-my-zsh
@@ -185,13 +183,23 @@ fi
 # }}}
 
 # Configure a simple prompt. I got so used to this one, that I use it in oh-my-zsh as well
-if (( UID != 0 )); then
-	username_color="%F{blue}"
-else
+#Username color depends on UID
+if (( UID == 0 )); then
 	username_color="%F{red}"
+else
+	username_color="%F{blue}"
 fi
-host_color="%F{green}"
-path_color="%F{blue}"
+
+#Host color depends on SSH/TMUX
+if [[ -n "${TMUX}" || -n "${TMUX_PANE}" ]]; then
+	host_color="%F{red}"
+elif [[ -n "${SSH_CLIENT}" || -n "${SSH_TTY}" ]]; then
+	host_color="%F{yellow}"
+else
+	host_color="%F{green}"
+fi
+
+path_color="%F{cyan}"
 PROMPT="${username_color}$USERNAME%f@${host_color}%B%m%b%f ${path_color}%B%3~%b%f > " #https://jlk.fjfi.cvut.cz/arch/manpages/man/zshmisc.1#EXPANSION_OF_PROMPT_SEQUENCES
 
 # Loading external ZSH configuration {{{

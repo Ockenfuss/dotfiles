@@ -1,19 +1,8 @@
-# Use some of emacs' shortcuts to move around
-# bindkey '\e[1~' beginning-of-line
-# bindkey '\e[4~' end-of-line
-# bindkey '\e[3~' delete-char
-# bindkey '\e[2~' overwrite-mode
-# bindkey "^[[7~" beginning-of-line	# Pos1
-# bindkey "^[[8~" end-of-line			# End
-# bindkey "^[[A" history-beginning-search-backward
-# bindkey "^[OA" history-beginning-search-backward
-# bindkey "^[[B" history-beginning-search-forward
-# bindkey "^[OB" history-beginning-search-forward
 
 # Add edit command line feature ("alt-e")
 autoload edit-command-line
 zle -N edit-command-line
-bindkey '\ee' edit-command-line
+bindkey '^[e' edit-command-line
 # }}}
 
 #Dynamic title of terminal
@@ -33,8 +22,16 @@ HISTFILE="${HOME}/.zsh_history"
 HISTSIZE=1000000
 SAVEHIST="${HISTSIZE}"
 
-# Ingore duplicates
-HISTCONTROL=erasedups
+setopt extended_history       # record timestamp of command in HISTFILE
+setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
+setopt hist_ignore_all_dups       #if a command is already present in the history file, append it and remove the older one
+setopt hist_find_no_dups      # even if the history file contains duplicates, show only once when using the command line history feature
+setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_verify            # show command with history expansion to user before running it
+setopt share_history          # share command history data
+setopt noincappendhistory
+setopt appendhistory
+# HISTCONTROL=erasedups
 HISTIGNORE='&:exit:logout:clear:history'
 # }}}
 
@@ -42,13 +39,9 @@ HISTIGNORE='&:exit:logout:clear:history'
 autoload -U colors
 colors
 
-setopt noincappendhistory
-setopt sharehistory
-setopt appendhistory
 setopt autocd				# .. -> cd ../
 setopt extendedglob			# cd search
 setopt print_exit_value		# Print non-zero exit value
-setopt hist_ignore_space	# Ignore command starting with a space
 
 setopt correct
 # Set a spelling prompt (needs `setopt correct`)
@@ -182,6 +175,32 @@ if [[ -d /usr/share/oh-my-zsh/ || -d "${HOME}/.oh-my-zsh/" ]]; then
 fi
 # }}}
 
+#Define some keybindings (after oh-my-zsh to prevent that they get overwritten)
+## Search history with up/down keys. You can find the keycode by pressing <Ctrl-V>+<Key> in the terminal.
+# bindkey "^[[A" history-beginning-search-backward
+bindkey "^[OA" history-beginning-search-backward
+# bindkey "^[[B" history-beginning-search-forward
+bindkey "^[OB" history-beginning-search-forward
+
+# Use some of emacs' shortcuts to move around
+# bindkey '\e[1~' beginning-of-line
+# bindkey '\e[4~' end-of-line
+# bindkey '\e[3~' delete-char
+# bindkey '\e[2~' overwrite-mode
+# bindkey "^[[7~" beginning-of-line	# Pos1
+# bindkey "^[[8~" end-of-line			# End
+
+#Cycle through history based on characters already typed on the line
+# autoload -U up-line-or-beginning-search
+# autoload -U down-line-or-beginning-search
+# zle -N up-line-or-beginning-search
+# zle -N down-line-or-beginning-search
+# bindkey "^[0A" up-line-or-beginning-search
+# bindkey "^[0B" down-line-or-beginning-search
+
+
+
+
 # Configure a simple prompt. I got so used to this one, that I use it in oh-my-zsh as well
 #Username color depends on UID
 if (( UID == 0 )); then
@@ -240,8 +259,6 @@ export LESS='-i -n -w -M -R -P%t?f%f \
 :stdin .?pb%pb\%:?lbLine %lb:?bbByte %bb:-...'
 
 # Extending the PATH
-[[ -d /usr/lib/ccache/bin ]] && export PATH="/usr/lib/ccache/bin/:${PATH}"
-[[ -d "${HOME}/c" ]] && export PATH="${HOME}/c:${PATH}"
 [[ -d "${HOME}/bin" ]] && export PATH="${HOME}/bin:${PATH}"
 export PATH="${PATH}:."
 PYTHONSTARTUP=~/.python/startup.py

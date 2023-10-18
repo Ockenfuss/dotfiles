@@ -1,117 +1,195 @@
-" This line should not be removed as it ensures that various options are
-" properly set to work with the Vim-related packages.
-runtime! archlinux.vim
+" Inspired by https://www.freecodecamp.org/news/vimrc-configuration-guide-customize-your-vim-editor/
 
-let mapleader = " " " The Leader key
+" Disable compatibility with vi which can cause unexpected issues.
+set nocompatible
 
-call plug#begin('~/.vim/plugged')
-Plug 'editorconfig/editorconfig-vim'
-Plug 'jamessan/vim-gnupg'
+" Enable type file detection. Vim will be able to try to detect the type of file is use.
+filetype on
 
-if has('nvim')
-	Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-	Plug 'Shougo/deoplete.nvim'
-endif
-Plug 'deoplete-plugins/deoplete-jedi'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
-Plug 'morhetz/gruvbox'
-Plug 'tpope/vim-fugitive'  " Fancy git commands
-Plug 'mhinz/vim-signify'  " VCS sign indicators
-Plug 'vim-airline/vim-airline'
-Plug 'dense-analysis/ale'
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'jiangmiao/auto-pairs' " Autoclose brackets and jump over them
-Plug 'luochen1990/rainbow' " Rainbow colorize brackets
-Plug 'preservim/nerdcommenter' " Shortcuts to comment lines and blocks
-Plug 'SirVer/ultisnips' " Snippet engine to insert code snippets
-Plug 'honza/vim-snippets' " Code templates for various programming languages
-call plug#end()
-" Plug-in specific configuration
+" Enable plugins and load plugin for the detected file type.
 filetype plugin on
-if !executable('ctags')
-    let g:gutentags_dont_load = 1
+
+" Load an indent file for the detected file type.
+filetype indent on
+
+" Turn syntax highlighting on.
+syntax on
+
+" Add numbers to the file.
+set number
+
+" Highlight cursor line underneath the cursor horizontally.
+set cursorline
+
+" Highlight cursor line underneath the cursor vertically.
+set cursorcolumn
+
+" Set shift width to 4 spaces.
+set shiftwidth=4
+
+" Set tab width to 4 columns.
+set tabstop=4
+
+" Use space characters instead of tabs.
+set expandtab
+
+" Do not save backup files.
+set nobackup
+
+" Do not let cursor scroll below or above N number of lines when scrolling.
+set scrolloff=10
+
+" Do not wrap lines. Allow long lines to extend as far as the line goes.
+set nowrap
+
+" While searching though a file incrementally highlight matching characters as you type.
+set incsearch
+
+" Ignore capital letters during search.
+set ignorecase
+
+" Override the ignorecase option if searching for capital letters.
+" This will allow you to search specifically for capital letters.
+set smartcase
+
+" Show partial command you type in the last line of the screen.
+set showcmd
+
+" Show the mode you are on the last line.
+set showmode
+
+" Show matching words during a search.
+set showmatch
+
+" Use highlighting when doing a search.
+set hlsearch
+
+" Set the commands to save in history default number is 20.
+set history=1000
+
+" Enable auto completion menu after pressing TAB.
+set wildmenu
+
+" Make wildmenu behave like similar to Bash completion.
+set wildmode=list:longest
+
+" There are certain files that we would never want to edit with Vim.
+" Wildmenu will ignore files with these extensions.
+set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
+
+" PLUGINS ---------------------------------------------------------------- {{{
+
+" call plug#begin('~/.vim/plugged')
+
+"   Plug 'dense-analysis/ale'
+
+"   Plug 'preservim/nerdtree'
+
+" call plug#end()
+
+" }}}
+
+" MAPPINGS --------------------------------------------------------------- {{{
+
+" Set the backslash as the leader key.
+let mapleader = " "
+
+" Press \\ to jump back to the last cursor position.
+" nnoremap <leader>\ ``
+
+" Type jk to exit insert mode quickly.
+inoremap jk <Esc>
+
+" Center the cursor vertically when moving to the next word during a search.
+nnoremap n nzz
+nnoremap N Nzz
+
+" Yank from cursor to the end of line.
+nnoremap Y y$
+
+
+" You can split the window in Vim by typing :split or :vsplit.
+" Navigate the split view easier by pressing CTRL+j, CTRL+k, CTRL+h, or CTRL+l.
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
+
+" Resize split windows using arrow keys by pressing:
+" CTRL+UP, CTRL+DOWN, CTRL+LEFT, or CTRL+RIGHT.
+noremap <c-up> <c-w>+
+noremap <c-down> <c-w>-
+noremap <c-left> <c-w>>
+noremap <c-right> <c-w><
+
+" }}}
+
+" VIMSCRIPT -------------------------------------------------------------- {{{
+
+" If Vim version is equal to or greater than 7.3 enable undofile.
+" This allows you to undo changes to a file even after saving it.
+if version >= 703
+    set undodir=~/.vim/backup
+    set undofile
+    set undoreload=10000
 endif
-let g:gruvbox_contrast_dark="hard"  " Can be either 'soft', 'medium' or 'hard'
-silent!colorscheme gruvbox
-" rainbow colors
-let g:rainbow_active = 1 "set to 0 if you want to enable it later via :RainbowToggle
-" Fancy status-line
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-" Fancy syntax error checking with ALE
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%::%code%]'
-let g:ale_python_pylint_options = '--disable=line-too-long,bad-continuation,too-many-locals,too-few-methods,invalid-name,wrong-import-order,wrong-import-position,import-outside-toplevel,missing-module-docstring'
-let g:ale_python_flake8_options = '--ignore=E501,E124,E402,W503,W504'
-" Enable the deoplete auto-completion framework
-let g:deoplete#enable_at_startup = 1
-" Make doc-strings work again in deoplete + Jedi
-let g:deoplete#sources#jedi#show_docstring = 1
-" Do not pollute projects with .ctags files
-let g:gutentags_cache_dir = "~/.cache/ctags/"
-let g:UltiSnipsExpandTrigger="<tab>"
-set updatetime=100  " Plug-in update-time
 
-set background=dark  " Specify either "dark" or "light"
-
-set tabstop=4     " Number of spaces that a <Tab> in the file counts for.
-set shiftwidth=4  " Number of spaces to use for each step of (auto)indent.
-set showcmd       " Show (partial) command in status line.
-
-" Configure search
-set hlsearch    " Highlight all matches of a previous search
-set incsearch   " Show immediately where the so far typed pattern matches
-set ignorecase  " Ignore case in search patterns
-set smartcase   " Override the 'ignorecase' option if the search pattern contains uppercase
-
-au FileType gitcommit set tw=72  " automatically wrap long commit messages
-au FileType gitcommit setlocal spell
-
-set diffopt+=iwhite " Ignore white space
-
-set linebreak       " Visual line wrapping
-syntax on           " Enable or disable syntax highlighting
-
-" Code Folding
-" For Python
-au BufNewFile,BufRead *.py set foldmethod=indent
-
-
-" Define an enable switch for hybrid line numbers
-set number relativenumber
-set nu rnu
-" Use absolute line numbers in non-focused buffers
-augroup numbertoggle
-	autocmd!
-	autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-	autocmd BufLeave,FocusLost,InsertEnter * set norelativenumber
+" You can split a window into sections by typing `:split` or `:vsplit`.
+" Display cursorline and cursorcolumn ONLY in active window.
+augroup cursor_off
+    autocmd!
+    autocmd WinLeave * set nocursorline nocursorcolumn
+    autocmd WinEnter * set cursorline cursorcolumn
 augroup END
 
-" Enable basic mouse support
-set mouse=a
-" Use the global clipboard for copy-pasting, a.k.a. yanking
-set clipboard=unnamedplus
+" If GUI version of Vim is running set these options.
+if has('gui_running')
 
-set hidden
-" Define keyboard shortcuts for switching between buffers
-nnoremap <C-h> :bprev<CR>
-nnoremap <C-l> :bnext<CR>
+    " Set the background tone.
+    set background=dark
 
-" Spell checking
-set spell
-set spelllang=en_us,de_de
+    " Set the color scheme.
+    colorscheme molokai
 
-" Search for selection in visual mode via `//`
-vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
+    " Set a custom font you have installed on your computer.
+    " Syntax: <font_name>\ <weight>\ <size>
+    set guifont=Monospace\ Regular\ 12
 
-" Select the first, not the last suggestion by remapping {Shift-,}Tab
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><s-TAB> pumvisible() ? "\<C-p>" : "\<s-TAB>"
+    " Display more of the file by default.
+    " Hide the toolbar.
+    set guioptions-=T
 
-" Remaps inspired from GUI apps
-inoremap <C-s> <esc>:w<CR>
-noremap <C-s> <esc>:w<CR>
-noremap <C-q> <esc>:q<CR>
+    " Hide the the left-side scroll bar.
+    set guioptions-=L
+
+    " Hide the the left-side scroll bar.
+    set guioptions-=r
+
+    " Hide the the menu bar.
+    set guioptions-=m
+
+    " Hide the the bottom scroll bar.
+    set guioptions-=b
+
+endif
+
+" }}}
+
+" STATUS LINE ------------------------------------------------------------ {{{
+
+" Clear status line when vimrc is reloaded.
+set statusline=
+
+" Status line left side.
+set statusline+=\ %F\ %M\ %Y\ %R
+
+" Use a divider to separate the left side from the right side.
+set statusline+=%=
+
+" Status line right side.
+"set statusline+=\ ascii:\ %b\ hex:\ 0x%B\ row:\ %l\ col:\ %c\ percent:\ %p%%
+
+" Show the status on the second to last line.
+set laststatus=2
+
+" }}}

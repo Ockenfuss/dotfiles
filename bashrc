@@ -133,3 +133,5 @@ if ! shopt -oq posix; then
 fi
 
 PYTHONSTARTUP=/home/paul/.python/startup.py
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

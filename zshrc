@@ -325,7 +325,7 @@ alias intercept='sudo strace -ff -e trace=write -e write=1,2 -p'
 alias listen='lsof -P -i -n'
 alias port='ss -tulanp'
 alias genpasswd="openssl rand -base64 128"
-alias readlink="readlink -f"
+alias rli="readlink -f"
 alias py="python3"
 
 # Safety aliases

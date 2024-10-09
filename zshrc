@@ -480,9 +480,13 @@ function libre() {
 
 #move latest file from download folder
 function md {
-    TEST=$(ls -art ~/Downloads/ | tail -n 1)
-    mv -i ~/Downloads/$TEST ./
-    echo moved $TEST
+	DFILE=$(find ~/Downloads/ -maxdepth 1 -mmin -60 -type f -exec ls -t {} + | head -n 1)
+	if [ -z "$DFILE" ]; then
+		echo "No downloaded file found in the last hour."
+	else
+		mv -i "$DFILE" ./
+		echo "Moved $DFILE"
+	fi
 }
 
 #Add Date Prefix
